@@ -4,7 +4,8 @@
   "description": "backend for listsyncc",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "Tejas Raibagi",
   "license": "MIT",
