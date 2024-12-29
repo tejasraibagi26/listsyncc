@@ -22,6 +22,10 @@ app.use("/auth", authRoutes);
 app.use("/youtube", ytRoutes);
 app.use("/spotify", spotifyRoutes);
 
+app.get("/ping", (req, res) => {
+  return res.json({ apiVersion: 1.0, health: "good" });
+});
+
 // Start the server
 app.listen(8080, () => {
   console.log("Server running on http://localhost:8080");
