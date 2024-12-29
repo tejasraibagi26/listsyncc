@@ -26,7 +26,8 @@ app.get("/ping", (req, res) => {
   return res.json({ apiVersion: 1.0, health: "good" });
 });
 
+const PORT = process.env.PORT || 8080;
 // Start the server
-app.listen(8080, () => {
-  console.log("Server running on http://localhost:8080");
+app.listen(PORT, () => {
+  console.log(`Server running on PORT: ${PORT}`);
 });
