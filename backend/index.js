@@ -8,7 +8,7 @@ const authRoutes = require("./routes/auth.route");
 const ytRoutes = require("./routes/youtube.route");
 const spotifyRoutes = require("./routes/spotify.route");
 
-const allowedOrigins = ["http://localhost:3000"];
+const allowedOrigins = ["http://localhost:3000", process.env.PROD_URL];
 
 // Use CORS middleware
 app.use(
