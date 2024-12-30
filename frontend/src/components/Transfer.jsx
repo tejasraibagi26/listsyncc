@@ -32,6 +32,7 @@ const Transfer = () => {
   };
 
   const [youtubeTokenExpires, setYoutubeTokenExpired] = useState(false);
+  const [blockFetch, setBlockFetch] = useState(false);
 
   const [fetching, setFetching] = useState(false);
   const [transferData, setTransferData] = useState({
@@ -52,6 +53,7 @@ const Transfer = () => {
   });
 
   const handleShowToast = (type, message) => {
+    if (toast.show) return;
     setToastData((prev) => ({
       ...prev,
       type: type || "info",
@@ -101,8 +103,16 @@ const Transfer = () => {
   };
 
   const fetchPlaylists = () => {
+    if (blockFetch) {
+      handleShowToast(
+        "error",
+        "Youtube API Qouta has exceeded, please try again later"
+      );
+      return;
+    }
     setFetching((prev) => !prev);
     setYoutubeTokenExpired(false);
+
     const from = transferData.from.toLowerCase();
 
     const accessToken = getAccessToken(from);
@@ -131,6 +141,7 @@ const Transfer = () => {
           };
         }
         if (data.status === 403) {
+          setBlockFetch(true);
           throw {
             status: data.status,
             message:
