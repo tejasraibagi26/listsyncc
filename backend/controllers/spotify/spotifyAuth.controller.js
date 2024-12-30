@@ -27,7 +27,7 @@ const login = async (req, res) => {
       redirect_uri: REDIRECT_URI,
     }
   )}`;
-  res.redirect(authUrl);
+  res.json({ authUrl });
 };
 
 const callback = async (req, res) => {

@@ -88,9 +88,22 @@ const GetStarted = () => {
   };
 
   const onConnectSpotify = () => {
-    window.location.href = import.meta.env.VITE_IS_DEV
+    const url = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/spotify/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/spotify/login`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        identifier: sessionStorage.getItem("identifier"),
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        window.location.href = data.authUrl;
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>
@@ -120,14 +133,14 @@ const GetStarted = () => {
               onConnect={onConnectSpotify}
               className="flex-1"
             />
-            <ConnectAccountCard
+            {/* <ConnectAccountCard
               icon={<FaApple size={54} />}
               accountProvider="Apple Music"
               isConnected={false}
               onConnect={() => {}}
               className="flex-1"
               disabled={true}
-            />
+            /> */}
           </div>
           <div
             onClick={onContinue}
