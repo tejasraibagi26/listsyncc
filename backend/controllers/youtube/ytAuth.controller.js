@@ -51,10 +51,7 @@ const login = async (req, res) => {
   logger.info({ eventStatus: status.started });
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: "online",
-    scope: [
-      "https://www.googleapis.com/auth/youtube.readonly",
-      "https://www.googleapis.com/auth/youtube.force-ssl",
-    ],
+    scope: ["https://www.googleapis.com/auth/youtube.readonly"],
   });
 
   logger.info({

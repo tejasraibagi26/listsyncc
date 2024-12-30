@@ -9,6 +9,7 @@ import SpotifyCallback from "./pages/SpotifyCallback";
 import SyncPlaylistsPage from "./pages/SyncPlaylists";
 import CongratsPage from "./pages/CongratsPage";
 import { TransferProvider } from "./Provider/TransferProvider";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const App = () => {
   useEffect(() => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/congrats" element={<CongratsPage />} />
           <Route path="/yt/callback" element={<YTCallback />} />
           <Route path="/spotify/callback" element={<SpotifyCallback />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </TransferProvider>
     </Router>
