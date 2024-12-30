@@ -14,8 +14,14 @@ const YTCallback = () => {
     const code = params.get("code");
 
     const identifier = sessionStorage.getItem("identifier");
+    const host = import.meta.env.VITE_IS_DEV
+      ? import.meta.env.VITE_DEV_API_URL
+      : import.meta.env.VITE_PROD_API_URL;
+
+    const url = `${host}/auth/yt/callback?code=${code}`;
+
     if (code) {
-      fetch("http://localhost:8080/auth/yt/callback?code=" + code, {
+      fetch(url, {
         method: "GET",
         headers: {
           identifier: identifier,
