@@ -35,7 +35,7 @@ const Toast = ({ message, type, visible }) => {
   }, [type]);
   return (
     <div
-      className={`${css} bg-opacity-25 fixed right-4 top-20 w-1/4 rounded-lg p-2 
+      className={`${css} bg-opacity-25 fixed right-4 top-20 sm:w-1/4 rounded-lg p-2 
         flex justify-start items-center gap-2 outline-dashed outline-1
         transition-all transform duration-500 ease-in-out
         ${visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}`}

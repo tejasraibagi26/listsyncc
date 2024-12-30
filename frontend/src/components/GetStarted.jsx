@@ -21,22 +21,31 @@ const GetStarted = () => {
     message: "",
   });
 
-  // const handleShowToast = (type, message) => {
-  //   setToastData((prev) => ({
-  //     ...prev,
-  //     type: type || "info",
-  //     message: message,
-  //   }));
+  const handleShowToast = (type, message) => {
+    setToastData((prev) => ({
+      ...prev,
+      type: type || "info",
+      message: message,
+    }));
 
-  //   setToast((prev) => ({ ...prev, animationDelay: true, show: true }));
+    setToast((prev) => ({ ...prev, animationDelay: true, show: true }));
 
-  //   setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 5000);
+    setTimeout(() => setToast((prev) => ({ ...prev, show: false })), 5000);
 
-  //   setTimeout(
-  //     () => setToast((prev) => ({ ...prev, animationDelay: false })),
-  //     4000
-  //   );
-  // };
+    setTimeout(
+      () => setToast((prev) => ({ ...prev, animationDelay: false })),
+      4000
+    );
+  };
+
+  const onContinue = () => {
+    if (!youtubeConnected || !spotifyConnected) {
+      handleShowToast("error", "Atleast 2 services should be connected");
+      return;
+    }
+
+    navigate("/transfer");
+  };
 
   useEffect(() => {
     const yt_accessToken = getAccessToken("youtube");
@@ -76,10 +85,6 @@ const GetStarted = () => {
         window.location.href = data.authUrl;
       })
       .catch((err) => console.log(err));
-
-    // window.location.href = import.meta.env.VITE_IS_DEV
-    //   ? `${import.meta.env.VITE_DEV_API_URL}/auth/yt/login`
-    //   : `${import.meta.env.VITE_PROD_API_URL}/auth/yt/login`;
   };
 
   const onConnectSpotify = () => {
@@ -125,9 +130,7 @@ const GetStarted = () => {
             />
           </div>
           <div
-            onClick={() => {
-              navigate("/transfer");
-            }}
+            onClick={onContinue}
             className="w-1/3 text-center cursor-pointer mt-10 text-lg p-2 outline-dashed outline-1 rounded-lg hover:bg-violet-600  hover:outline-none transition-colors"
           >
             Continue
