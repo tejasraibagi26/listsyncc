@@ -31,7 +31,7 @@ const Banner = ({ type, text }) => {
   return (
     <>
       <span
-        className={`p-2 rounded-lg outline-dashed outline-1 outline-gray-400 tracking-tight mt-5 font-medium flex justify-start items-center gap-2 ${bgColor} bg-opacity-25`}
+        className={`p-2 rounded-lg outline-dashed outline-1 outline-gray-400 tracking-tight mt-5 font-medium flex sm:flex-row flex-col justify-start sm:items-center gap-2 ${bgColor} bg-opacity-25`}
       >
         {icon}
         {text}

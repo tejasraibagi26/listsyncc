@@ -16,17 +16,17 @@ const Home = () => {
     navigate("/get-started");
   };
   return (
-    <div className="h-screen w-screen flex flex-col items-center">
+    <div className="sm:h-screen h-auto w-screen flex flex-col items-center">
       <Navbar />
-      <main className="h-full w-2/3 flex flex-col justify-center items-center">
+      <main className="h-full sm:w-2/3 w-full p-3 sm:p-0 flex flex-col justify-center items-center sm:mt-0 mt-10">
         <div className="h-full w-full flex flex-col justify-center items-center">
-          <h1 className="text-6xl font-bold tracking-tighter">
+          <h1 className="sm:text-6xl text-3xl font-bold tracking-tighter">
             Transfer your songs with a{" "}
             <span className="underline underline-offset-8 decoration-violet-500 decoration-wavy">
               click
             </span>
           </h1>
-          <p className="pt-10 text-xl tracking-tight text-center text-gray-400">
+          <p className="pt-10 sm:text-xl text-lg tracking-tight text-center text-gray-400">
             ListSyncc makes it easy to transfer and sync your playlists between
             apps
           </p>
@@ -42,7 +42,7 @@ const Home = () => {
             ensure that all tokens are cleared as soon as you leave our site."
           />
 
-          <div className="mt-10 w-full flex justify-between gap-10 items-stretch">
+          <div className="mt-10 w-full flex sm:flex-row flex-col justify-between sm:gap-10 gap-5 items-stretch">
             <div className="w-full flex flex-col justify-start items-start gap-4 border border-gray-400 rounded-lg p-6 hover:bg-white hover:bg-opacity-10">
               <FaFingerprint size={54} />
               <p className="cursor-default select-none mt-2 font-semibold">

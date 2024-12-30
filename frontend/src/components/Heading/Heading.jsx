@@ -6,7 +6,9 @@ const Heading = ({ step, heading, children }) => {
       <span className="tracking-tighter font-medium items-start text-gray-400 ">
         <code>{step}</code>
       </span>
-      <h1 className="text-5xl font-bold tracking-tighter">{heading}</h1>
+      <h1 className="sm:text-5xl text-2xl font-bold tracking-tighter">
+        {heading}
+      </h1>
       {children}
     </div>
   );

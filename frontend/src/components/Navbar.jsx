@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
 
+  const goToHome = () => {
+    navigate("/");
+  };
+
   const privacyPolicy = () => {
     navigate("/privacy-policy");
   };
@@ -12,8 +16,8 @@ const Navbar = () => {
     window.open("https://github.com/tejasraibagi26/listsyncc", "_blank");
   };
   return (
-    <div className="w-1/2 h-50 flex justify-between items-center pt-4">
-      <h1 className="text-3xl font-bold tracking-tighter">
+    <div className="sm:w-1/2 w-full pl-2 pr-2 h-50 flex justify-between items-center pt-4">
+      <h1 className="text-3xl font-bold tracking-tighter" onClick={goToHome}>
         ListSyncc<span className="text-violet-500">.</span>
       </h1>
       <div className="flex items-center gap-4 ">

@@ -203,7 +203,7 @@ const Transfer = () => {
     <>
       <div className="h-screen w-screen flex flex-col items-center">
         <Navbar />
-        <main className="h-full w-2/3 flex flex-col justify-center items-center">
+        <main className="h-full sm:w-2/3 p-2 sm:p-0 flex flex-col justify-center items-center">
           <Heading
             step="02"
             heading="Select Your Source and Destination Platforms"
@@ -225,8 +225,8 @@ const Transfer = () => {
               }
             />
           </Heading>
-          <div className="w-full flex justify-center items-stretch mt-10 gap-10">
-            <div className="w-1/2 h-auto flex flex-col">
+          <div className="w-full flex sm:flex-row flex-col justify-center items-stretch mt-10 gap-10">
+            <div className="sm:w-1/2 h-auto flex flex-col">
               <label className="pb-1">
                 <code>Source</code>
               </label>
@@ -266,7 +266,7 @@ const Transfer = () => {
               )}
             </div>
 
-            <div className="w-1/2 h-auto flex flex-col">
+            <div className="sm:w-1/2 h-auto flex flex-col">
               <label className="pb-1">
                 <code>Destination</code>
               </label>
