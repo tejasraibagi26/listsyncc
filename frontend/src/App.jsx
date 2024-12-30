@@ -8,6 +8,7 @@ import TransferPage from "./pages/Transfer";
 import SpotifyCallback from "./pages/SpotifyCallback";
 import SyncPlaylistsPage from "./pages/SyncPlaylists";
 import CongratsPage from "./pages/CongratsPage";
+import Policy from "./pages/Policy";
 import { TransferProvider } from "./Provider/TransferProvider";
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/congrats" element={<CongratsPage />} />
           <Route path="/yt/callback" element={<YTCallback />} />
           <Route path="/spotify/callback" element={<SpotifyCallback />} />
+          <Route path="/privacy-policy" element={<Policy />} />
         </Routes>
       </TransferProvider>
     </Router>

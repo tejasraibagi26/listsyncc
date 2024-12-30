@@ -1,11 +1,11 @@
 import { FaGithub } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const privacyPolicy = () => {
-    window.open(
-      "https://www.freeprivacypolicy.com/live/3dd3c358-7523-4ec3-8da6-1d18eddff877",
-      "_blank"
-    );
+    navigate("/privacy-policy");
   };
 
   const repo = () => {
