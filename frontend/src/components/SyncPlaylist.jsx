@@ -48,46 +48,49 @@ const SyncPlaylist = () => {
 
     const url = `${host}/${destination}/transfer/${source}?accessToken=${accessToken}`;
 
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify(selectedPlaylists),
-      headers: {
-        "Content-Type": "application/json",
-        identifier: sessionStorage.getItem("identifier"),
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        data.transferCompleted.forEach((completed) => {
-          moveToCompleted(completed.playlist.id);
-        });
-        setTransferDone(true);
+    for (const playlist of selectedPlaylists) {
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify([playlist]),
+        headers: {
+          "Content-Type": "application/json",
+          identifier: sessionStorage.getItem("identifier"),
+        },
       })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  });
+        .then((response) => response.json())
+        .then((data) => {
+          data.transferCompleted.forEach((completed) => {
+            moveToCompleted(completed.playlist.id);
+          });
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
+
+    setTransferDone(true);
+  }, []);
 
   return (
     <>
       <div className="h-screen w-screen flex flex-col items-center">
         <Navbar />
-        <main className="h-full sm:w-1/2 p-2 sm:p-0 flex flex-col justify-center items-center">
+        <main className="h-full sm:w-1/2 p-8 sm:p-0 flex flex-col justify-center items-center">
           <Heading
             step="03"
             heading="Sit back and relax, while we sync your playlists"
           />
           <Banner
             type="warning"
-            text="his process may take a while. Please
+            text="This process may take a while. Please
               keep this window open, but feel free to browse while you wait."
           />
-          <div className="w-full flex sm:flex-row flex-col  gap-4 justify-center mt-10">
-            <div className="min-h-1/2 sm:w-1/2 bg-gray-600 bg-opacity-25 rounded-lg p-4">
+          <div className="w-full h-2/3 flex sm:flex-row flex-col  gap-4 justify-center mt-10">
+            <div className="h-3/4 overflow-scroll sm:w-1/2 bg-gray-600 bg-opacity-25 rounded-lg p-4">
               <h1 className="font-bold tracking-tighter text-2xl mb-1">
                 Transferring
               </h1>
-              <div>
+              <div className="max-h-1/3 overflow-scroll p-2">
                 {selectedPlaylists?.map((data) => {
                   return (
                     <div key={data.playlist.id} id={data.playlist.id}>
@@ -108,7 +111,7 @@ const SyncPlaylist = () => {
                 </div>
               )}
             </div>
-            <div className="min-h-1/2 sm:w-1/2 bg-gray-600 bg-opacity-25 rounded-lg p-4">
+            <div className="h-3/4 overflow-scroll  sm:w-1/2 bg-gray-600 bg-opacity-25 rounded-lg p-4">
               <h1 className="font-bold tracking-tighter text-2xl mb-1">
                 Completed
               </h1>

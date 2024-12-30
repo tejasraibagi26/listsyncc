@@ -4,6 +4,8 @@ const normalizePlaylistData = require("../../utils/normalizePlaylist");
 const { platforms } = require("../../utils/constants");
 const { getSpotifyUserId } = require("./utils");
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const getPlaylist = async (accessToken, indentifier) => {
   const logger = logFactory({
     logType: logType.service,
@@ -74,40 +76,32 @@ const syncPlaylist = async (accessToken, playlists, source, identifier) => {
         songs,
       } = playlistItem;
 
-      const createPlaylistResponse = await axios.post(
-        `https://api.spotify.com/v1/users/${user_id}/playlists`,
-        {
-          name: name,
-          description: `Playlist synced from ${source}`,
-          public: false,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
       const spotifyPlaylistId = createPlaylistResponse.data.id;
 
-      const trackURIs = await Promise.all(
-        songs.map(async (song) => {
-          const spotifyURI = await searchSpotifyTrack(
-            song,
-            accessToken,
-            errors,
-            fullfilled
-          );
-          return spotifyURI;
-        })
+      const trackURIs = await getTrackUriWithDelay(
+        songs,
+        accessToken,
+        errors,
+        fullfilled,
+        200
       );
+
+      const filtered = trackURIs.filter((uri) => uri);
+
+      if (filtered.length === 0) {
+        console.log(`Playlist "${name}" not synced to Spotify.`);
+        return {
+          transferFailed: [playlistItem],
+          errors: ["Could not find any songs on Spotify"],
+        };
+      }
 
       // Add the tracks to the Spotify playlist
       await axios
         .post(
           `https://api.spotify.com/v1/playlists/${spotifyPlaylistId}/tracks`,
           {
-            uris: trackURIs.filter((uri) => uri), // Filter out any null URIs
+            uris: trackURIs.filter((uri) => uri),
           },
           {
             headers: {
@@ -135,6 +129,33 @@ const syncPlaylist = async (accessToken, playlists, source, identifier) => {
   }
 };
 
+const getTrackUriWithDelay = async (
+  songs,
+  accessToken,
+  errors,
+  fullfilled,
+  delay = 200
+) => {
+  const uris = [];
+
+  for (const song of songs) {
+    try {
+      const spotifyUri = await searchSpotifyTrack(
+        song,
+        accessToken,
+        errors,
+        fullfilled
+      );
+
+      uris.push(spotifyUri);
+
+      await delay(delay);
+    } catch (error) {}
+  }
+
+  return uris;
+};
+
 const searchSpotifyTrack = async (song, accessToken, errors, fullfilled) => {
   try {
     const response = await axios.get(
@@ -146,7 +167,8 @@ const searchSpotifyTrack = async (song, accessToken, errors, fullfilled) => {
       }
     );
 
-    const track = response.data.tracks.items[0]; // Assuming the first result is the correct one
+    const track = response.data.tracks.items[0];
+
     if (track) {
       fullfilled.push({
         id: song.id,

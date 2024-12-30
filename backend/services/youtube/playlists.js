@@ -4,7 +4,6 @@ const { platforms } = require("../../utils/constants");
 
 const updatePlaylist = (playlists, item, data) => {
   const existingPlaylist = playlists.find((list) => list.id === item.id);
-
   if (existingPlaylist) {
     existingPlaylist.data = [...existingPlaylist.data, data];
   } else {
@@ -25,36 +24,90 @@ const getPlaylist = async (accessToken) => {
 
   const youtube = youtubeClient(accessToken);
   const playlists = [];
+  const likedSongs = [];
 
-  const userPlaylists = await youtube.playlists.list({
-    part: "id,snippet",
-    mine: true,
-    maxResults: 50,
-  });
+  try {
+    const userPlaylists = await youtube.playlists.list({
+      part: "id,snippet",
+      mine: true,
+      maxResults: 50,
+    });
 
-  for (const item of userPlaylists.data.items) {
-    const videos = await getVideosInPlaylist(item.id, accessToken);
+    await fetchAllLiked(accessToken, likedSongs);
 
-    for (let video of videos) {
-      const data = await getVideoCategoryId(
-        video.snippet.resourceId.videoId,
-        accessToken
+    for (const likedSong of likedSongs) {
+      updatePlaylist(
+        playlists,
+        {
+          id: "LL",
+          snippet: { title: "Liked Songs", thumbnails: [] },
+        },
+        likedSong
       );
-
-      if (!data || data == undefined || data?.categoryId !== "10") break;
-
-      updatePlaylist(playlists, item, data);
     }
+
+    for (const item of userPlaylists.data.items) {
+      const videos = await getVideosInPlaylist(item.id, accessToken);
+
+      for (let video of videos) {
+        const data = await getVideoCategoryId(
+          video.snippet.resourceId.videoId,
+          accessToken
+        );
+
+        if (!data || data == undefined || data?.categoryId !== "10") break;
+
+        updatePlaylist(playlists, item, data);
+      }
+    }
+
+    const normalizedPlaylist = normalizePlaylistData(
+      playlists,
+      platforms.YOUTUBE
+    );
+
+    return normalizedPlaylist;
+  } catch (error) {
+    console.log("err", error);
+    throw { status: error.status, message: error.message, error: error.error };
   }
-
-  const normalizedPlaylist = normalizePlaylistData(
-    playlists,
-    platforms.YOUTUBE
-  );
-
-  console.dir(normalizedPlaylist, { depth: null });
-  return normalizedPlaylist;
 };
+
+async function fetchAllLiked(accessToken, likedSongs) {
+  const youtube = youtubeClient(accessToken);
+  const nextPageToken = null;
+
+  try {
+    do {
+      const liked = await youtube.playlistItems.list({
+        part: "snippet,contentDetails",
+        playlistId: "LL",
+        maxResults: 50,
+      });
+
+      for (const likedItems of liked.data.items) {
+        const data = await getVideoCategoryId(
+          likedItems.snippet.resourceId.videoId,
+          accessToken
+        );
+
+        if (!data || data == undefined || data?.categoryId !== "10") break;
+
+        likedSongs.push(data);
+      }
+    } while (nextPageToken);
+  } catch (error) {
+    console.error("Error fetching liked videos:");
+    if (error.status === 403) {
+      throw { status: error.status, message: "Qouta exceeded" };
+    }
+    throw {
+      status: error.status,
+      message: "Error fetching liked videos",
+      error,
+    };
+  }
+}
 
 async function getVideosInPlaylist(playlistId, accessToken) {
   const youtube = youtubeClient(accessToken);

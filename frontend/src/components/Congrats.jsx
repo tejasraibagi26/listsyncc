@@ -13,7 +13,7 @@ const Congrats = () => {
       <Confetti total={99} />
       <div className="h-screen w-screen flex flex-col items-center">
         <Navbar />
-        <main className="h-full w-1/2 flex flex-col justify-center items-center">
+        <main className="h-full sm:w-1/2 p-10 sm:p-0 flex flex-col justify-center items-center">
           <Heading
             step="04"
             heading="Yay! Your transfer is all set. Enjoy your music and have fun!"

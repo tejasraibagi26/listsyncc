@@ -130,7 +130,13 @@ const Transfer = () => {
               "It seems your token has expired. Please reauthenticate your YouTube Music account.",
           };
         }
-
+        if (data.status === 403) {
+          throw {
+            status: data.status,
+            message:
+              "Looks like the request is not authorized or Youtube API Qouta has exceeded. Please try again in 24 hours.",
+          };
+        }
         setTransferData((prev) => ({ ...prev, fromPlaylists: data }));
         handleShowToast("success", "Retrieved data");
       })
@@ -216,7 +222,7 @@ const Transfer = () => {
     <>
       <div className="h-screen w-screen flex flex-col items-center">
         <Navbar />
-        <main className="h-full sm:w-2/3 p-2 sm:p-0 flex flex-col justify-center items-center">
+        <main className="h-full sm:w-2/3 p-10 sm:p-0 flex flex-col justify-center items-center ">
           <Heading
             step="02"
             heading="Select Your Source and Destination Platforms"
@@ -308,8 +314,7 @@ const Transfer = () => {
                 ? fetchPlaylists
                 : onStartTransfer
             }
-            className={`cursor-pointer mt-10 text-lg tracking-tight p-2 outline  outline-1 rounded-lg hover:bg-violet-600 hover:outline-none transition-colors ${
-              transferData.fromPlaylists.length > 0 && "absolute bottom-0 mb-10"
+            className={`cursor-pointer mt-10 text-lg tracking-tight p-2 outline  outline-1 rounded-lg hover:bg-violet-600 hover:outline-none transition-colors 
             } ${
               fetching && "bg-transparent hover:bg-transparent outline-none"
             }`}
@@ -324,7 +329,7 @@ const Transfer = () => {
               `Transfer to ${transferData.to}`
             )}
           </div>
-          <div className="w-full">
+          <div className="w-full max-h-2/3 overflow-scroll pr-2 pl-2">
             {transferData.fromPlaylists.length !== 0 && (
               <div className="mt-10">
                 <div className="mb-4 flex justify-between">

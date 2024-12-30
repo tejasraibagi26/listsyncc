@@ -18,9 +18,9 @@ const Home = () => {
   return (
     <div className="sm:h-screen h-auto w-screen flex flex-col items-center">
       <Navbar />
-      <main className="h-full sm:w-2/3 w-full p-3 sm:p-0 flex flex-col justify-center items-center sm:mt-0 mt-10">
+      <main className="h-full sm:w-2/3 w-full p-10 sm:p-0 flex flex-col justify-center items-center sm:mt-0 mt-10">
         <div className="h-full w-full flex flex-col justify-center items-center">
-          <h1 className="sm:text-6xl text-3xl font-bold tracking-tighter">
+          <h1 className="sm:text-6xl text-4xl text-center sm:text-start font-bold tracking-tighter">
             Transfer your songs with a{" "}
             <span className="underline underline-offset-8 decoration-violet-500 decoration-wavy">
               click
