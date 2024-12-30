@@ -60,13 +60,13 @@ const GetStarted = () => {
   // }, [spotifyConnected, youtubeConnected, navigate]);
 
   const onConnectYotube = () => {
-    window.location.href = import.meta.env.VITE_IS_DEV
+    window.location = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/yt/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/yt/login`;
   };
 
   const onConnectSpotify = () => {
-    window.location.href = import.meta.env.VITE_IS_DEV
+    window.location = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/spotify/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/spotify/login`;
   };
