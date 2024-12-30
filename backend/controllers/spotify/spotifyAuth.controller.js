@@ -27,6 +27,7 @@ const login = async (req, res) => {
       redirect_uri: REDIRECT_URI,
     }
   )}`;
+  logger.info({ message: `Auth URL: ${authUrl}` });
   res.json({ authUrl });
 };
 
