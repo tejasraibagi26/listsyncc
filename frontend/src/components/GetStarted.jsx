@@ -100,7 +100,7 @@ const GetStarted = () => {
         )}
         <main className="h-full sm:w-2/3 p-2 sm:p-0 flex flex-col justify-center items-center mt-10 sm:mt-0">
           <Heading step="01" heading="First we need to connect your accounts" />
-          <div className="flex sm:flex-wrap flex-col justify-center items-stretch mt-10 gap-10">
+          <div className="flex sm:flex-row flex-col justify-center items-stretch mt-10 gap-10">
             <ConnectAccountCard
               icon={<FaYoutube size={54} />}
               accountProvider="YouTube Music"
