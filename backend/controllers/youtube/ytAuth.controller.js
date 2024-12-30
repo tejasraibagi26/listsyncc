@@ -58,7 +58,7 @@ const login = async (req, res) => {
     message: "redirecting to youtube login",
     eventStatus: status.completed,
   });
-  res.redirect(authUrl);
+  res.json({ authUrl });
 };
 
 module.exports = {

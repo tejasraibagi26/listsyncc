@@ -60,13 +60,30 @@ const GetStarted = () => {
   // }, [spotifyConnected, youtubeConnected, navigate]);
 
   const onConnectYotube = () => {
-    window.location = import.meta.env.VITE_IS_DEV
+    const url = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/yt/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/yt/login`;
+
+    fetch(url, {
+      method: "GET",
+      headers: {
+        identifier: sessionStorage.getItem("identifier"),
+      },
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        window.location.href = data.authUrl;
+      })
+      .catch((err) => console.log(err));
+
+    // window.location.href = import.meta.env.VITE_IS_DEV
+    //   ? `${import.meta.env.VITE_DEV_API_URL}/auth/yt/login`
+    //   : `${import.meta.env.VITE_PROD_API_URL}/auth/yt/login`;
   };
 
   const onConnectSpotify = () => {
-    window.location = import.meta.env.VITE_IS_DEV
+    window.location.href = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/spotify/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/spotify/login`;
   };
