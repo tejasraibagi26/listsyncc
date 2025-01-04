@@ -341,6 +341,9 @@ const Transfer = () => {
             )}
           </div>
           <div className="w-full max-h-2/3 overflow-scroll pr-2 pl-2">
+            {transferData.fromPlaylists.length === 0 && (
+              <h1>Oops, we couldn&apos;t find any playlists</h1>
+            )}
             {transferData.fromPlaylists.length !== 0 && (
               <div className="mt-10">
                 <div className="mb-4 flex justify-between">
