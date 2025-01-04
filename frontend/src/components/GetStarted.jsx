@@ -100,6 +100,7 @@ const GetStarted = () => {
   };
 
   const onConnectSpotify = () => {
+    setLoading((prev) => ({ ...prev, spotify: true }));
     const url = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/spotify/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/spotify/login`;
@@ -115,7 +116,14 @@ const GetStarted = () => {
         console.log(data);
         window.location.href = data.authUrl;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        const resetLoading = {
+          youtube: false,
+          spotify: false,
+        };
+        setLoading((prev) => ({ ...prev, ...resetLoading }));
+      });
   };
   return (
     <>
