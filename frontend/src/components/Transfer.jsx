@@ -39,6 +39,7 @@ const Transfer = () => {
     from: "YouTube",
     to: "Spotify",
     fromPlaylists: [],
+    fetchError: null,
   });
 
   const [selectedPlaylist, setSelectedPlaylist] = useState([]);
@@ -147,6 +148,14 @@ const Transfer = () => {
             message:
               "Looks like the request is not authorized or Youtube API Qouta has exceeded. Please try again in 24 hours.",
           };
+        }
+        if (data.length === 0 || !data) {
+          setTransferData((prev) => ({
+            ...prev,
+            fetchError: "Oops, we could'nt find any playlists.",
+          }));
+          handleShowToast("error", "Oops, we could'nt find any playlists.");
+          return;
         }
         setTransferData((prev) => ({ ...prev, fromPlaylists: data }));
         handleShowToast("success", "Retrieved data");
@@ -341,8 +350,8 @@ const Transfer = () => {
             )}
           </div>
           <div className="w-full max-h-2/3 overflow-scroll pr-2 pl-2">
-            {transferData.fromPlaylists.length === 0 && (
-              <h1>Oops, we couldn&apos;t find any playlists</h1>
+            {transferData.fetchError && (
+              <Banner type="error" text={<p>{transferData.fetchError}</p>} />
             )}
             {transferData.fromPlaylists.length !== 0 && (
               <div className="mt-10">
