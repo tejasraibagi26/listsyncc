@@ -152,9 +152,9 @@ const Transfer = () => {
         if (data.length === 0 || !data) {
           setTransferData((prev) => ({
             ...prev,
-            fetchError: "Oops, we could'nt find any playlists.",
+            fetchError: "Oops, we couldn't find any playlists.",
           }));
-          handleShowToast("error", "Oops, we could'nt find any playlists.");
+          handleShowToast("error", "Oops, we couldn't find any playlists.");
           return;
         }
         setTransferData((prev) => ({ ...prev, fromPlaylists: data }));
