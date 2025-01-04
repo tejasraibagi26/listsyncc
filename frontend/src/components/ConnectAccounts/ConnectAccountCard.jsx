@@ -9,6 +9,7 @@ const ConnectAccountCard = ({
   onConnect,
   className = "",
   disabled = false,
+  loading = false,
 }) => {
   return (
     <div
@@ -22,6 +23,7 @@ const ConnectAccountCard = ({
           name={accountProvider}
           onButtonClick={onConnect}
           disabled={disabled}
+          loading={loading}
         />
       ) : (
         <div className="w-full flex items-center justify-start gap-2">
@@ -40,6 +42,7 @@ ConnectAccountCard.propTypes = {
   onConnect: PropTypes.func.isRequired,
   className: PropTypes.func,
   disabled: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default ConnectAccountCard;

@@ -1,5 +1,5 @@
 import Navbar from "./Navbar";
-import { FaYoutube, FaSpotify, FaApple } from "react-icons/fa";
+import { FaYoutube, FaSpotify } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import DevBtn from "./Buttons/DevBtn";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,10 @@ const GetStarted = () => {
   const navigate = useNavigate();
   const [youtubeConnected, setYoutubeConnected] = useState(false);
   const [spotifyConnected, setSpotifyConnected] = useState(false);
+  const [loading, setLoading] = useState({
+    youtube: false,
+    spotify: false,
+  });
   const [toast, setToast] = useState({
     animationDelay: false,
     show: false,
@@ -59,16 +63,17 @@ const GetStarted = () => {
     if (spotify_accessToken || spotifyConnected) setSpotifyConnected(true);
   }, []);
 
-  // useEffect(() => {
-  //   if (spotifyConnected && youtubeConnected) {
-  //     handleShowToast("success", "Wohoo! Let's go and setup your transfer.");
-  //     setTimeout(() => {
-  //       navigate("/transfer");
-  //     }, 5000);
-  //   }
-  // }, [spotifyConnected, youtubeConnected, navigate]);
+  useEffect(() => {
+    if (spotifyConnected && youtubeConnected) {
+      handleShowToast("success", "Wohoo! Let's go and setup your transfer.");
+      setTimeout(() => {
+        navigate("/transfer");
+      }, 5000);
+    }
+  }, [spotifyConnected, youtubeConnected, navigate]);
 
   const onConnectYotube = () => {
+    setLoading((prev) => ({ ...prev, youtube: true }));
     const url = import.meta.env.VITE_IS_DEV
       ? `${import.meta.env.VITE_DEV_API_URL}/auth/yt/login`
       : `${import.meta.env.VITE_PROD_API_URL}/auth/yt/login`;
@@ -84,7 +89,14 @@ const GetStarted = () => {
         console.log(data);
         window.location.href = data.authUrl;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => {
+        const resetLoading = {
+          youtube: false,
+          spotify: false,
+        };
+        setLoading((prev) => ({ ...prev, ...resetLoading }));
+      });
   };
 
   const onConnectSpotify = () => {
@@ -125,6 +137,7 @@ const GetStarted = () => {
               isConnected={youtubeConnected}
               onConnect={onConnectYotube}
               className="flex-1"
+              loading={loading.youtube}
             />
             <ConnectAccountCard
               icon={<FaSpotify size={54} />}
@@ -132,6 +145,7 @@ const GetStarted = () => {
               isConnected={spotifyConnected}
               onConnect={onConnectSpotify}
               className="flex-1"
+              loading={loading.spotify}
             />
             {/* <ConnectAccountCard
               icon={<FaApple size={54} />}
